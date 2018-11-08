@@ -12,16 +12,16 @@ stepthree = re.search(r'\(([^)]+)', steptwo[0])             #Regex search, insid
 
 stepfour = stepthree.group(0).split('(')                    #Get rid of the '('
 
-stepfive = re.compile('input (.*)', flags=re.DOTALL)
+stepfive = re.compile(r'(?<=input )\w+')
 
-stepsix = re.search(stepfive,stepfour[1])
+stepsix = re.findall(stepfive,stepfour[1])
 
 #stepfive = stepfour[1].split(',')
 
 file = open('output.txt', mode='w')
 
 if stepfive:
-    file.write(stepsix.group(0))
+    file.write(stepsix[0])
 
 #for i in stepfive:
 #    file.write(stepfive[1])
