@@ -4,26 +4,33 @@ file = open ('chipmunks.sv', mode = 'r')
 
 stepone=file.read()
 
-steptwo=stepone.split(';')
+moduleheader=stepone.split(';')
 
 file.close()
 
-stepthree = re.search(r'\(([^)]+)', steptwo[0])             #Regex search, inside brackets, ^) excludes ')'
+bracketsRegexObj = re.search(r'\(([^)]+)', moduleheader[0])             #Regex search, inside brackets, ^) excludes ')'
 
-stepfour = stepthree.group(0).split('(')                    #Get rid of the '('
+IOlist = bracketsRegexObj.group(0).split('(')                    #Get rid of the '('
+#input parse
+inputRegexObj = re.compile(r'(?<=input )\w+')                    #Finds all input values
+inputRegexObjBus = re.compile(r'(?<=input )\[\w+\D\w+\] \w+')
 
-stepfive = re.compile(r'(?<=input )\w+')
-
-stepsix = re.findall(stepfive,stepfour[1])
-
-#stepfive = stepfour[1].split(',')
+inputList = re.findall(inputRegexObj,IOlist[1])                  #inputList is a array that contains all inputs
+inputListbus = re.findall(inputRegexObjBus,IOlist[1])
 
 file = open('output.txt', mode='w')
 
-if stepfive:
-    file.write(stepsix[0])
-
-#for i in stepfive:
-#    file.write(stepfive[1])
+if inputList:
+    for x in range(len(inputList)):
+        file.write('wire ')
+        file.write(inputList[x])
+        file.write(';')
+        file.write('\n')
+if inputListbus:
+    for x in range(len(inputListbus)):
+        file.write('wire ')
+        file.write(inputListbus[x])
+        file.write(';')
+        file.write('\n')
 
 file.close()
