@@ -1,4 +1,6 @@
 import re
+import tkinter as tk
+from tkinter import filedialog
 
 
 def findexpandprint(regexobj, objlist, svtype):
@@ -28,8 +30,10 @@ def printdut(modname, IOarray):
                 file.write(',')
     return
 
+root = tk.Tk()
+root.filename = filedialog.askopenfilename(initialdir="/", title="Select file", filetypes=(("SystemVerilog", "*.sv"), ("Verilog file", "*.v")))
 
-file = open('chipmunks.sv', mode='r')
+file = open(root.filename, mode='r')
 
 stepOne = file.read()
 
@@ -62,7 +66,7 @@ allBuses = re.findall(allBusesRegexObj, IOlist[1])
 # End of Regex search
 
 # Writing in file
-file = open('output.txt', mode='w')
+file = open('output.sv', mode='w')
 
 file.write('module tb_')
 file.write(modName)
